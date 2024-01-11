@@ -1,0 +1,31 @@
+name: CI/CD with Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18.16.1
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Docker image
+      run: docker build -t server3ac/3acsServer:latest -f ../Dockerfile .
+
+    - name: Push Docker image to Azure Container Registry
+      run: |
+        docker login server3ac.azurecr.io -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PASSWORD }}
+        docker tag server3ac/3acsServer:latest server3ac.azurecr.io/3acsServer:latest
+        docker push server3ac.azurecr.io/3acsServer:latest
