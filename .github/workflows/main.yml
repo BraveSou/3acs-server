@@ -22,10 +22,10 @@ jobs:
       run: npm install
 
     - name: Build Docker image
-      run: docker build -t server3ac/3acsServer:latest -f ../Dockerfile .
+      run: docker build -t server3ac/3acs-server-git-actions:latest -f ../Dockerfile .
 
     - name: Push Docker image to Azure Container Registry
       run: |
         docker login server3ac.azurecr.io -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PASSWORD }}
-        docker tag server3ac/3acsServer:latest server3ac.azurecr.io/3acsServer:latest
-        docker push server3ac.azurecr.io/3acsServer:latest
+        docker tag server3ac/3acs-server-git-actions:latest server3ac.azurecr.io/3acs-server-git-actions:latest
+        docker push server3ac.azurecr.io/3acs-server-git-actions:latest
