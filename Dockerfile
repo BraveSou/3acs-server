@@ -1,5 +1,5 @@
 # Use a smaller base image for Node.js, such as the 'alpine' version
-FROM node:14-alpine
+FROM node:18.16.1
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
