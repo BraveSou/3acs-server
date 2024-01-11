@@ -22,7 +22,7 @@ jobs:
       run: npm install
 
     - name: Build Docker image
-      run: docker build -t server3ac/3acsServer:latest -f Dockerfile .
+      run: docker build -t server3ac/3acs-server-git-actions:latest -f Dockerfile .
 
     - name: Push Docker image to Azure Container Registry
       run: |
