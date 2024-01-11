@@ -41,7 +41,7 @@ const upload = multer({ storage });
 
 
 router.get('/', (req, res) => {
-    res.send('say cheese!');
+    res.send('say cheese hello!');
 });
 // mark order dispatched
 router.get('/markOrderDispatched/:id', async (req, res)=>{
