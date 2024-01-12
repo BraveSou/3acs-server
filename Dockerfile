@@ -13,8 +13,8 @@ RUN npm install --production
 # Copy the application code into the container
 COPY . .
 
-# Copy the 'assets' folder
-COPY assets ./assets
+# Copy the 'assets' folder from the root directory
+COPY /assets /usr/src/app/assets
 
 # Expose the port the app runs on
 EXPOSE 80
