@@ -25,18 +25,10 @@ const blobServiceClient = new BlobServiceClient(
 const containerClient = blobServiceClient.getContainerClient("products");
 
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './assets/uploads'); // Change the destination folder as needed
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `${file.fieldname}-${Date.now()}${ext}`);
-  },
-});
+const storage = multer.memoryStorage();
 // const storage = multer.memoryStorage();
 
-const upload = multer({ storage });
+const upload = multer({ storage: storage });
 
 
 
@@ -180,10 +172,10 @@ router.get('/getCartItems', async (req, res) => {
 // add a product
 router.post('/addProduct', upload.single('productpic'), async (req, res) => {
   try {
-    const imagePath = req.file.path;
+    const imageBuffer = req.file.buffer;
 
     // Upload image to Azure Storage Blob
-    const blobName = path.basename(imagePath);
+    const blobName = path.basename(req.file.originalname); // Using the original file name
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
     // Ensure that the blockBlobClient is successfully created
@@ -191,7 +183,8 @@ router.post('/addProduct', upload.single('productpic'), async (req, res) => {
       return res.status(500).json({ success: false, message: 'Error creating BlockBlobClient' });
     }
 
-    await blockBlobClient.uploadFile(imagePath);
+    // Upload the image buffer directly
+    await blockBlobClient.upload(imageBuffer, imageBuffer.length);
 
     // Generate a SAS token for the image
     const sasToken = await blockBlobClient.generateSasUrl({
@@ -200,9 +193,10 @@ router.post('/addProduct', upload.single('productpic'), async (req, res) => {
       expiresOn: new Date("9999-12-31T23:59:59Z"), // Expires in a very distant future
     });
 
-    // Delete the local image file
-    fs.unlinkSync(imagePath);
-    const sp = req.body.price*1.1;
+    // Delete the local image file (in-memory storage doesn't use a path)
+    // fs.unlinkSync(imagePath); // Remove this line
+
+    const sp = req.body.price * 1.1;
 
     const newProduct = new Product({
       name: req.body.productname,
@@ -223,15 +217,17 @@ router.post('/addProduct', upload.single('productpic'), async (req, res) => {
       ...savedProduct._doc,
       images: [`${sasToken}`],
     };
-    const user = await User.findOne({_id: req.body.supplier})
-    await masterService.sendEmail(user.email, `New Producted Added`, `Hello ${user.firstname} ${user.lastname}, Your Product has successfully been added. Adios.`, "Three Amigos Corp")
-    
+
+    const user = await User.findOne({ _id: req.body.supplier });
+    await masterService.sendEmail(user.email, `New Producted Added`, `Hello ${user.firstname} ${user.lastname}, Your Product has successfully been added. Adios.`, "Three Amigos Corp");
+
     res.status(200).json({ success: true, message: "Product added successfully", data: productWithSas });
   } catch (error) {
     console.error(error);
     res.status(201).json({ success: false, message: "Server Error" });
   }
 });
+
 router.post('/addTransaction', async (req, res) => {
   try {
     const { amount, date, userId, description } = req.body;
