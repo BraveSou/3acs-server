@@ -14,7 +14,7 @@ const MasterService = require('./services/productServices');
 const masterService = new MasterService();
 
 
-const azure_storage_account = "3acsstorageaccount "
+const azure_storage_account = "3acsstorageaccount"
 const azure_storage_account_key = "N10UiEffoLmkUTwHsQSLLGSepjPg/BFtP93WsHAQUDF+v6wDyrE/3dVvGNdsYdEHrTPQowg086SX+AStHQ9ANg==";
 const azure_storage_account_sharedKeyCredential = new StorageSharedKeyCredential(azure_storage_account, azure_storage_account_key);
 
