@@ -33,7 +33,7 @@ const upload = multer({ storage: storage });
 
 
 router.get('/', (req, res) => {
-    res.send('changed');
+    res.send({success:true, message:"express server"});
 });
 // mark order dispatched
 router.get('/markOrderDispatched/:id', async (req, res)=>{
@@ -275,8 +275,6 @@ router.get('/getAllUsers', async (req, res)=>{
   }
 
 })
-
-
 // get all the products
 router.get('/getAllProducts', async (req, res) => {
   try {
@@ -480,8 +478,6 @@ router.get('/checkout/:cartId', async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 });
-
-
   // Route to add a new user
 router.post('/addUser', async (req, res) => {
     try {
