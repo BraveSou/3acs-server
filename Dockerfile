@@ -14,8 +14,8 @@ RUN npm install --production
 COPY . .
 
 
-# Expose the port the app runs on
-EXPOSE 80
+# Expose the port the app runs on - this is the port that will be exposed so that it can be accessed from the container
+EXPOSE 80 
 
-# Run the application
+# Run the application - this are the ignition commands that help to start the server
 CMD ["node", "index.js"]

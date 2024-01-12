@@ -33,7 +33,7 @@ const upload = multer({ storage: storage });
 
 
 router.get('/', (req, res) => {
-    res.send({success:true, message:"express server"});
+    res.send({success:true, message:"Bingo...express server container runs"});
 });
 // mark order dispatched
 router.get('/markOrderDispatched/:id', async (req, res)=>{

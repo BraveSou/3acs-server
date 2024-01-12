@@ -1,10 +1,11 @@
 name: CI/CD with Docker
-
+# waits for the push event
 on:
   push:
     branches:
       - main
-
+# these are the jobs that will be done, each step is named 
+# the security is implemented through the login to the asure container registry using configuration secrets stored in the github actions
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,6 +26,7 @@ jobs:
       run: docker build -t server3ac/3acs-server-git-actions:latest -f Dockerfile .
 
     - name: Push Docker image to Azure Container Registry
+    # the security implementation 
       run: |
         docker login server3ac.azurecr.io -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PASSWORD }}
         docker tag server3ac/3acs-server-git-actions:latest server3ac.azurecr.io/3acs-server-git-actions:latest
