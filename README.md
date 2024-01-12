@@ -8,6 +8,4 @@ npm init
 npm install - to install all the dependencies in the package.json
 
 1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/express-server.git
+   git clone https://github.com/BraveSou/3acs-server.git
