@@ -66,7 +66,7 @@ router.get('/markOrderDispatched/:id', async (req, res)=>{
       res.status(200).json({success:true, message: "Order updated successfully"})
 
   }catch(e){
-    res.status(500).send({success:false, message: "Server error"})
+    res.status(500).send({success:false, message: e})
   }
 })
 // mark order complete
