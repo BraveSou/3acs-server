@@ -14,8 +14,8 @@ const MasterService = require('./services/productServices');
 const masterService = new MasterService();
 
 
-const azure_storage_account = "3acsimagestorage"
-const azure_storage_account_key = "IgeI3y8i8SdWvjW1zUpbkwU3W7tfaTmSSDRfCeji01gmeIm8+Th9jL74RZ4kI/m+wJ0Lh/iFmXJI+ASt1QoVHQ==";
+const azure_storage_account = "3acsstorageaccount "
+const azure_storage_account_key = "N10UiEffoLmkUTwHsQSLLGSepjPg/BFtP93WsHAQUDF+v6wDyrE/3dVvGNdsYdEHrTPQowg086SX+AStHQ9ANg==";
 const azure_storage_account_sharedKeyCredential = new StorageSharedKeyCredential(azure_storage_account, azure_storage_account_key);
 
 const blobServiceClient = new BlobServiceClient(
@@ -41,7 +41,7 @@ const upload = multer({ storage });
 
 
 router.get('/', (req, res) => {
-    res.send('Final test');
+    res.send('changing storage account');
 });
 // mark order dispatched
 router.get('/markOrderDispatched/:id', async (req, res)=>{
